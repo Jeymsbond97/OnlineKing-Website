@@ -1,0 +1,27 @@
+name: Auto Commit
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Har kuni soat 00:00 UTC da ishlaydi
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository’ni klon qilish
+        uses: actions/checkout@v4
+
+      - name: Sana va vaqtni log faylga qo‘shish
+        run: echo "$(date)" >> log.txt
+
+      - name: Git sozlamalari
+        run: |
+          git config --global user.name "Jeymsbond97"
+          git config --global user.email "aminjonovtoxirbek@gmail.com"
+
+      - name: Commit va Push qilish
+        run: |
+          git add .
+          git commit -m "Automated commit: $(date)"
+          git push
