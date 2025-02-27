@@ -3,6 +3,7 @@ name: Auto Commit
 on:
   schedule:
     - cron: '0 0 * * *'  # Har kuni soat 00:00 UTC da ishlaydi
+    workflow_dispatch:  # Qo‘lda ishga tushirish uchun
 
 jobs:
   commit:
