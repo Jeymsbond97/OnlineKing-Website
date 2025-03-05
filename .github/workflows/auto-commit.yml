@@ -2,8 +2,8 @@ name: Auto Commit
 
 on:
   schedule:
-    - cron: '0 */2 * * *'  # Har kuni soat 00:00 UTC da ishlaydi
-  workflow_dispatch:  # Qo‘lda ishga tushirish uchun
+    - cron: '0 0 * * *'  # Har kuni soat 00:00 UTC da ishlaydi
+  workflow_dispatch:
 
 jobs:
   commit:
@@ -13,16 +13,17 @@ jobs:
       - name: Repository’ni klon qilish
         uses: actions/checkout@v4
 
-      - name: Sana va vaqtni log faylga qo‘shish
-        run: echo "$(date) - Solved a new algorithm challenge by Tokhirbek" >> daily_coding_challenges.md
-
       - name: Git sozlamalari
         run: |
           git config --global user.name "Tokhirbek"
           git config --global user.email "aminjonovtoxirbek@gmail.com"
 
-      - name: Commit va Push qilish
+      - name: Kun davomida tasodifiy commitlar
         run: |
-          git add daily_coding_challenges.md
-          git commit -m "Solved a new algorithm challenge by Tokhirbek on $(date)"
+          NUM_COMMITS=$((RANDOM % 5 + 1))  # Har kuni 1-5 ta commit qilish
+          for i in $(seq 1 $NUM_COMMITS); do
+            echo "$(date) - Solved a new algorithm challenge by Tokhirbek" >> daily_coding_challenges.md
+            git add daily_coding_challenges.md
+            git commit -m "Solved a new algorithm challenge by Tokhirbek at $(date +'%Y-%m-%d %H:%M:%S')"
+          done
           git push
